@@ -1,5 +1,15 @@
 import PropTypes from 'prop-types';
+import { memo } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
+
+const ListItem = memo(({ item }) => {
+  console.log(item);
+  return (
+    <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
+      <Text style={{ fontSize: 20 }}>{item.task}</Text>
+    </View>
+  );
+});
 
 const ListScreen = () => {
   const todos = [];
@@ -10,29 +20,10 @@ const ListScreen = () => {
   return (
     <FlatList
       data={todos}
-      renderItem={({ item }) => {
-        console.log(item.id);
-        return (
-          <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-            <Text style={{ fontSize: 20 }}>{item.task}</Text>
-          </View>
-        );
-      }}
+      renderItem={({ item }) => <ListItem item={item} />}
       keyExtractor={(item) => item.number.toString()}
+      windowSize={5} // prev : 10, cur: 1, next: 10
     />
-    // <ScrollView style={styles.container}>
-    //   {todos.map((item) => {
-    //     console.log(item.id);
-    //     return (
-    //       <View
-    //         key={item.id}
-    //         style={{ paddingHorizontal: 20, paddingVertical: 10 }}
-    //       >
-    //         <Text style={{ fontSize: 20 }}>{item.task}</Text>
-    //       </View>
-    //     );
-    //   })}
-    // </ScrollView>
   );
 };
 
