@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
+  Keyboard,
   Pressable,
   StyleSheet,
   TextInput,
@@ -9,11 +10,14 @@ import {
 } from 'react-native';
 import { PRIMARY, WHITE } from '../colors';
 
+const BOTTOM = 30;
+
 const InputFAB = () => {
   const [text, setText] = useState('');
   const [isOpend, setIsOpened] = useState(false);
   const inputRef = useRef(null);
   const windowWidth = useWindowDimensions().width;
+  const [keyboardHeight, setKeyboardHeight] = useState(BOTTOM);
 
   const open = () => {
     setIsOpened(true);
@@ -26,9 +30,30 @@ const InputFAB = () => {
   };
 
   const onPressButton = () => (isOpend ? close() : open());
+
+  useEffect(() => {
+    const show = Keyboard.addListener('keyboardWillShow', (e) => {
+      setKeyboardHeight(e.endCoordinates.height);
+    });
+
+    const hide = Keyboard.addListener('keyboardWillShow', () => {
+      setKeyboardHeight(BOTTOM);
+    });
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+
   return (
     <>
-      <View style={[styles.container, isOpend && { width: windowWidth - 20 }]}>
+      <View
+        style={[
+          styles.container,
+          { bottom: keyboardHeight, alignItems: 'flex-start' },
+          isOpend && { width: windowWidth - 20 },
+        ]}
+      >
         <TextInput
           ref={inputRef}
           value={text}
@@ -46,6 +71,7 @@ const InputFAB = () => {
         onPress={onPressButton}
         style={({ pressed }) => [
           styles.container,
+          { bottom: keyboardHeight },
           pressed && { backgroundColor: PRIMARY.DARK },
         ]}
       >
@@ -58,7 +84,7 @@ const InputFAB = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: 30,
+    bottom: BOTTOM,
     right: 10,
     width: 60,
     height: 60,
