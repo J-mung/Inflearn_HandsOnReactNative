@@ -32,9 +32,9 @@ Inflearn강의 "핸즈온 리액트 네이티브"로 학습하고 배우는 Reac
         ```
     * **차이점**
         * ScrollView   
-        - 한 번에 모든 목록을 rendering.   
-        - 데이터의 양이 많지 않고, 크기가 정해져 있을 때 사용.   
-        - ex) 회원가입   
+        -한 번에 모든 목록을 rendering.   
+        -데이터의 양이 많지 않고, 크기가 정해져 있을 때 사용.   
+        -ex) 회원가입   
         * FlatList   
         -필요한 만큼만 rendering.   
         -데이터의 양이 많거나, 크기를 예측할 수 없을 때 사용.   
@@ -50,9 +50,9 @@ Inflearn강의 "핸즈온 리액트 네이티브"로 학습하고 배우는 Reac
     * React component가 rendering될 때마가 특정 작업을 실행할 수 있는 Hook.
     * component가 mount / unmount / update 되면 해당 Hook이 수행됨.
     * CleanUp func(뒷정리 함수)   
-    event object를 해당 Hook에서 다룰 때, mount될 때마다 object가 생성되는 경우가 있음.   
-    따라서 CleanUp func를 통해 unmount될 때, 생성한 object를 제거하는 것으로 해결 가능.   
-    commit 2681894dd5f9... 참조.   
+    -event object를 해당 Hook에서 다룰 때, mount될 때마다 object가 생성되는 경우가 있음.   
+    -따라서 CleanUp func를 통해 unmount될 때, 생성한 object를 제거하는 것으로 해결 가능.   
+    -commit 2681894dd5f9... 참조.   
 
 
 #### 유용한 기능
