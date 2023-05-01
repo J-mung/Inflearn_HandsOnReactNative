@@ -14,11 +14,11 @@ Inflearn강의 "핸즈온 리액트 네이티브"로 학습하고 배우는 Reac
     * **FlatList component**
     * ScrollView와 달리 key를 자동으로 할당.
     * keyExtractor prop을 통해서 직접 key를 지정할 수 있음.
-    * windowSize로 rendering할 item의 개수를 조절.
-    -기본값 21(1이 화면 높이).
-    -현재 화면 1 + 이전 화면 10 + 다음화면 10.
-    -값이 작으면 메모리 절약.
-    -값이 작으면 빈 호 ㅏ면이 나올 가능성이 있음.
+    * windowSize로 rendering할 item의 개수를 조절.   
+    -기본값 21(1이 화면 높이).   
+    -현재 화면 1 + 이전 화면 10 + 다음화면 10.   
+    -값이 작으면 메모리 절약.   
+    -값이 작으면 빈 호 ㅏ면이 나올 가능성이 있음.   
     * FlatList는 이미 rendering한 item까지도 re-rendering 하는 문제점이 있음.
     * React.memo를 통해 re-rendering이 필요없는 부분은 재활용함.
         ```
@@ -31,14 +31,14 @@ Inflearn강의 "핸즈온 리액트 네이티브"로 학습하고 배우는 Reac
         />
         ```
     * **차이점**
-        * ScrollView
-        -한 번에 모든 목록을 rendering.
-        -데이터의 양이 많지 않고, 크기가 정해져 있을 때 사용.
-        -ex) 회원가입
-        * FlatList
-        -필요한 만큼만 rendering.
-        -데이터의 양이 많거나, 크기를 예측할 수 없을 때 사용.
-        -ex) 친구 목록, 글 목록
+        * ScrollView   
+        -한 번에 모든 목록을 rendering.   
+        -데이터의 양이 많지 않고, 크기가 정해져 있을 때 사용.   
+        -ex) 회원가입   
+        * FlatList   
+        -필요한 만큼만 rendering.   
+        -데이터의 양이 많거나, 크기를 예측할 수 없을 때 사용.   
+        -ex) 친구 목록, 글 목록   
         
 #### React API
 * **React.memo**
@@ -49,10 +49,10 @@ Inflearn강의 "핸즈온 리액트 네이티브"로 학습하고 배우는 Reac
 * **React.useEffect**
     * React component가 rendering될 때마가 특정 작업을 실행할 수 있는 Hook.
     * component가 mount / unmount / update 되면 해당 Hook이 수행됨.
-    * CleanUp func(뒷정리 함수)
-    event object를 해당 Hook에서 다룰 때, mount될 때마다 object가 생성되는 경우가 있음.
-    따라서 CleanUp func를 통해 unmount될 때, 생성한 object를 제거하는 것으로 해결 가능.
-    commit 2681894dd5f9... 참조.
+    * CleanUp func(뒷정리 함수)   
+    event object를 해당 Hook에서 다룰 때, mount될 때마다 object가 생성되는 경우가 있음.   
+    따라서 CleanUp func를 통해 unmount될 때, 생성한 object를 제거하는 것으로 해결 가능.   
+    commit 2681894dd5f9... 참조.   
 
 
 #### 유용한 기능
