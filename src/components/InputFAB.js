@@ -23,6 +23,13 @@ const InputFAB = () => {
 
   // current를 마지막에 붙임으로써 사용할 때마다 .current를 사용하는 불편이 줄음
   const inputWidth = useRef(new Animated.Value(BUTTON_WIDTH)).current;
+  const buttonRotation = useRef(new Animated.Value(0)).current;
+  // Animate에는 문자열을 값으로 전달할 수 없으므로, interpolate 사용.
+  const spin = buttonRotation.interpolate({
+    // Value가 0일 때, '0deg', value가 1일 때 '315deg'
+    inputRange: [0, 1],
+    outputRange: ['0deg', '315deg'],
+  });
 
   const open = () => {
     setIsOpened(true);
@@ -35,6 +42,11 @@ const InputFAB = () => {
       // animation이 끝나고 수행할 코드 작성.
       inputRef.current.focus();
     });
+    Animated.spring(buttonRotation, {
+      toValue: 1,
+      useNativeDriver: false,
+      bounciness: 20, // animation 튕김 정도.
+    }).start();
   };
 
   const close = () => {
@@ -47,22 +59,29 @@ const InputFAB = () => {
     }).start(() => {
       inputRef.current.blur();
     });
+    Animated.spring(buttonRotation, {
+      toValue: 0,
+      useNativeDriver: false,
+      bounciness: 20,
+    }).start();
   };
 
   const onPressButton = () => (isOpend ? close() : open());
 
   useEffect(() => {
-    const show = Keyboard.addListener('keyboardWillShow', (e) => {
-      setKeyboardHeight(e.endCoordinates.height);
-    });
+    if (Platform.OS === 'ios') {
+      const show = Keyboard.addListener('keyboardWillShow', (e) => {
+        setKeyboardHeight(e.endCoordinates.height);
+      });
 
-    const hide = Keyboard.addListener('keyboardWillShow', () => {
-      setKeyboardHeight(BOTTOM);
-    });
-    return () => {
-      show.remove();
-      hide.remove();
-    };
+      const hide = Keyboard.addListener('keyboardWillShow', () => {
+        setKeyboardHeight(BOTTOM);
+      });
+      return () => {
+        show.remove();
+        hide.remove();
+      };
+    }
   }, []);
 
   return (
@@ -91,16 +110,24 @@ const InputFAB = () => {
           onBlur={close}
         />
       </Animated.View>
-      <Pressable
-        onPress={onPressButton}
-        style={({ pressed }) => [
+
+      <Animated.View
+        style={[
           styles.container,
-          { bottom: keyboardHeight },
-          pressed && { backgroundColor: PRIMARY.DARK },
+          { bottom: keyboardHeight, transform: [{ rotate: spin }] },
         ]}
       >
-        <MaterialCommunityIcons name="plus" size={24} color="white" />
-      </Pressable>
+        <Pressable
+          onPress={onPressButton}
+          style={({ pressed }) => [
+            styles.container,
+            { right: 0 },
+            pressed && { backgroundColor: PRIMARY.DARK },
+          ]}
+        >
+          <MaterialCommunityIcons name="plus" size={24} color="white" />
+        </Pressable>
+      </Animated.View>
     </>
   );
 };
@@ -108,7 +135,6 @@ const InputFAB = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    bottom: BOTTOM,
     right: 10,
     width: BUTTON_WIDTH,
     height: BUTTON_WIDTH,
