@@ -2,13 +2,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useRef, useState } from 'react';
 import {
   Keyboard,
+  Platform,
   Pressable,
   StyleSheet,
   TextInput,
   View,
   useWindowDimensions,
 } from 'react-native';
-import { PRIMARY, WHITE } from '../colors';
+import { BLACK, PRIMARY, WHITE } from '../colors';
 
 const BOTTOM = 30;
 
@@ -50,6 +51,7 @@ const InputFAB = () => {
       <View
         style={[
           styles.container,
+          styles.shadow,
           { bottom: keyboardHeight, alignItems: 'flex-start' },
           isOpend && { width: windowWidth - 20 },
         ]}
@@ -97,6 +99,17 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 70,
     color: WHITE,
+  },
+  shadow: {
+    shadowColor: BLACK,
+    ...Platform.select({
+      ios: {
+        shadowOffset: { width: 2, height: 4 },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+      },
+      android: { elevation: 5 },
+    }),
   },
 });
 
