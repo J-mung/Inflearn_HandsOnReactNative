@@ -1,17 +1,18 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useRef, useState } from 'react';
 import {
+  Animated,
   Keyboard,
   Platform,
   Pressable,
   StyleSheet,
   TextInput,
-  View,
   useWindowDimensions,
 } from 'react-native';
 import { BLACK, PRIMARY, WHITE } from '../colors';
 
 const BOTTOM = 30;
+const BUTTON_WIDTH = 60;
 
 const InputFAB = () => {
   const [text, setText] = useState('');
@@ -20,14 +21,32 @@ const InputFAB = () => {
   const windowWidth = useWindowDimensions().width;
   const [keyboardHeight, setKeyboardHeight] = useState(BOTTOM);
 
+  // current를 마지막에 붙임으로써 사용할 때마다 .current를 사용하는 불편이 줄음
+  const inputWidth = useRef(new Animated.Value(BUTTON_WIDTH)).current;
+
   const open = () => {
     setIsOpened(true);
-    inputRef.current.focus();
+    Animated.timing(inputWidth, {
+      toValue: windowWidth - 20,
+      // animation 효과가 native level에서 동작할지 결정하는 것.
+      useNativeDriver: false, // layout을 수정할 때는 false.
+      duration: 300, // animation이 수행되는 시간.
+    }).start(() => {
+      // animation이 끝나고 수행할 코드 작성.
+      inputRef.current.focus();
+    });
   };
 
   const close = () => {
     setIsOpened(false);
-    inputRef.current.blur();
+
+    Animated.timing(inputWidth, {
+      toValue: BUTTON_WIDTH,
+      useNativeDriver: false,
+      duration: 300,
+    }).start(() => {
+      inputRef.current.blur();
+    });
   };
 
   const onPressButton = () => (isOpend ? close() : open());
@@ -48,12 +67,15 @@ const InputFAB = () => {
 
   return (
     <>
-      <View
+      <Animated.View
         style={[
           styles.container,
           styles.shadow,
-          { bottom: keyboardHeight, alignItems: 'flex-start' },
-          isOpend && { width: windowWidth - 20 },
+          {
+            bottom: keyboardHeight,
+            alignItems: 'flex-start',
+            width: inputWidth,
+          },
         ]}
       >
         <TextInput
@@ -68,7 +90,7 @@ const InputFAB = () => {
           returnKeyType={'done'}
           onBlur={close}
         />
-      </View>
+      </Animated.View>
       <Pressable
         onPress={onPressButton}
         style={({ pressed }) => [
@@ -88,16 +110,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: BOTTOM,
     right: 10,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: BUTTON_WIDTH,
+    height: BUTTON_WIDTH,
+    borderRadius: BUTTON_WIDTH / 2,
     backgroundColor: PRIMARY.DEFAULT,
     justifyContent: 'center',
     alignItems: 'center',
   },
   input: {
     paddingLeft: 20,
-    paddingRight: 70,
+    paddingRight: BUTTON_WIDTH + 10,
     color: WHITE,
   },
   shadow: {
