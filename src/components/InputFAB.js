@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import PrpoTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import {
   Animated,
@@ -14,8 +14,9 @@ import { BLACK, PRIMARY, WHITE } from '../colors';
 
 const BOTTOM = 30;
 const BUTTON_WIDTH = 60;
+const RIGHT = 10;
 
-const InputFAB = ({ onInsert }) => {
+const InputFAB = ({ onInsert, isBottom }) => {
   const [text, setText] = useState('');
   const [isOpend, setIsOpened] = useState(false);
   const inputRef = useRef(null);
@@ -31,6 +32,15 @@ const InputFAB = ({ onInsert }) => {
     inputRange: [0, 1],
     outputRange: ['0deg', '315deg'],
   });
+  const buttonRight = useRef(new Animated.Value(RIGHT)).current;
+
+  // 스크롤이 바닥에 도착했을 때, inputFAB 버튼을 숨기는 기능.
+  useEffect(() => {
+    Animated.timing(buttonRight, {
+      toValue: isBottom ? RIGHT - BUTTON_WIDTH : RIGHT,
+      useNativeDriver: false,
+    }).start();
+  }, [isBottom, buttonRight]);
 
   const open = () => {
     setIsOpened(true);
@@ -101,6 +111,7 @@ const InputFAB = ({ onInsert }) => {
             bottom: keyboardHeight,
             alignItems: 'flex-start',
             width: inputWidth,
+            right: buttonRight,
           },
         ]}
       >
@@ -122,7 +133,11 @@ const InputFAB = ({ onInsert }) => {
       <Animated.View
         style={[
           styles.container,
-          { bottom: keyboardHeight, transform: [{ rotate: spin }] },
+          {
+            bottom: keyboardHeight,
+            transform: [{ rotate: spin }],
+            right: buttonRight,
+          },
         ]}
       >
         <Pressable
@@ -141,13 +156,13 @@ const InputFAB = ({ onInsert }) => {
 };
 
 InputFAB.propTypes = {
-  onInsert: PrpoTypes.func.isRequired,
+  onInsert: PropTypes.func.isRequired,
+  isBottom: PropTypes.bool.isRequired,
 };
 
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    right: 10,
     width: BUTTON_WIDTH,
     height: BUTTON_WIDTH,
     borderRadius: BUTTON_WIDTH / 2,
