@@ -40,6 +40,24 @@ Inflearn강의 "핸즈온 리액트 네이티브"로 학습하고 배우는 Reac
         -데이터의 양이 많거나, 크기를 예측할 수 없을 때 사용.   
         -ex) 친구 목록, 글 목록   
         
+* Animated
+    * animation을 만들기 위해서 Animated.Value에 하나 이상의 스타일 속성을 연결.   
+    * useRef hook을 사용해서 가변 참조 객체를 얻은 다음에 animation 값을 수정할 것.
+        ```sh
+        // current를 마지막에 작성함으로써 사용할 때마다 .current를 작성하는 불편이 해소.
+        const aniObj = useRef(new Animated.Value(초깃값)).current;
+        ```
+    * animation을 통해 업데이트를 수행할 때는 Animated.timing().
+        ```sh
+        Animated.timing(Value, {
+            toValue: 변경 값,
+            useNativeDriver: 네이티브 레벨에서 처리할지 여부,
+            duration: 애니메이션 동작 시간(ms)
+        }).start(() => {
+            // 애니메이션 종료 후 호출할 함수
+        });
+        ```
+        
 #### React API
 * **React.memo**
     * props에 변화가 없을 때 re-rendering을 방지.
