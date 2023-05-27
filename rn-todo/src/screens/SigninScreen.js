@@ -21,7 +21,7 @@ const SignInScreen = () => {
   const { setUser } = useUserContext();
 
   useEffect(() => {
-    setDisabled(!email || !password);
+    setDisabled(!email || !password); // 하나라도 입력이 없으면 true가 되서 SIGNIN btn 비활성화
   }, [email, password]);
 
   const onSubmit = async () => {
