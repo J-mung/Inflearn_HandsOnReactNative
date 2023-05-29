@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Input, { InputTypes } from '../components/Input';
+import SafeInputView from '../components/SafeInputView';
 import { AuthRoutes } from '../navigations/routes';
 import Button from './Button';
 // import PropTypes from 'prop-types';
@@ -10,41 +11,43 @@ const SignInScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>SignInScreen</Text>
+    <SafeInputView>
+      <View style={styles.container}>
+        <Text style={styles.title}>SignInScreen</Text>
 
-      {/* <Input
+        {/* <Input
         title={'EMAIL'}
         placeholder={'your@email.com'}
         iconName={'email'}
         keyboardType={KeyboardTypes.EMAIL}
       /> */}
-      <Input
-        inputType={InputTypes.EMAIL}
-        value={email}
-        onChangeText={(text) => setEmail(text.trim())}
-        styles={inputStyles}
-      />
-      <Input
-        inputType={InputTypes.PASSWORD}
-        value={password}
-        onChangeText={(text) => setPassword(text.trim())}
-        styles={inputStyles}
-      />
+        <Input
+          inputType={InputTypes.EMAIL}
+          value={email}
+          onChangeText={(text) => setEmail(text.trim())}
+          styles={inputStyles}
+        />
+        <Input
+          inputType={InputTypes.PASSWORD}
+          value={password}
+          onChangeText={(text) => setPassword(text.trim())}
+          styles={inputStyles}
+        />
 
-      <Button
-        title={'SIGNIN'}
-        onPress={() => {
-          navigation.navigate(AuthRoutes.SIGN_UP);
-        }}
-        styles={{
-          container: {
-            paddingHorizontal: 20,
-            marginTop: 20,
-          },
-        }}
-      />
-    </View>
+        <Button
+          title={'SIGNIN'}
+          onPress={() => {
+            navigation.navigate(AuthRoutes.SIGN_UP);
+          }}
+          styles={{
+            container: {
+              paddingHorizontal: 20,
+              marginTop: 20,
+            },
+          }}
+        />
+      </View>
+    </SafeInputView>
   );
 };
 
