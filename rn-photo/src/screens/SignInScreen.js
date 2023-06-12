@@ -1,8 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Input, { InputTypes } from '../components/Input';
 import SafeInputView from '../components/SafeInputView';
+import TextButton from '../components/TextButton';
+import { AuthRoutes } from '../navigations/routes';
 import Button from './Button';
 
 const SignInScreen = ({ navigation }) => {
@@ -13,7 +16,7 @@ const SignInScreen = ({ navigation }) => {
   const [disabled, setDisabled] = useState(true);
 
   const { top } = useSafeAreaInsets();
-
+  const { navigate } = useNavigation();
   useEffect(() => {
     setDisabled(!email || !password);
   }, [email, password]);
@@ -58,6 +61,11 @@ const SignInScreen = ({ navigation }) => {
           isLoading={isLoading}
           onPress={onSubmit}
           styles={{ container: { marginTop: 20 } }}
+        />
+
+        <TextButton
+          title={'SIGNUP'}
+          onPress={() => navigate(AuthRoutes.SIGN_UP)}
         />
       </View>
     </SafeInputView>
