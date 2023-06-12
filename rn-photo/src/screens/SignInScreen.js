@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
 import { Keyboard, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import HR from '../components/HR';
 import Input, { InputTypes } from '../components/Input';
 import SafeInputView from '../components/SafeInputView';
 import TextButton from '../components/TextButton';
@@ -62,6 +63,8 @@ const SignInScreen = ({ navigation }) => {
           onPress={onSubmit}
           styles={{ container: { marginTop: 20 } }}
         />
+
+        <HR text={'OR'} styles={{ container: { marginVertical: 30 } }} />
 
         <TextButton
           title={'SIGNUP'}
