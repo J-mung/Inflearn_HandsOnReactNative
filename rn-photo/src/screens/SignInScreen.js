@@ -1,6 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
-import { Image, Keyboard, StatusBar, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  Keyboard,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WHITE } from '../colors';
 import HR from '../components/HR';
@@ -49,8 +56,11 @@ const SignInScreen = ({ navigation }) => {
             resizeMode={'cover'}
           />
         </View>
-        <View
+        <ScrollView
           style={[styles.form, { paddingBottom: bottom ? bottom + 10 : 40 }]}
+          contentContainerStyle={{ alignItems: 'center' }}
+          bounces={false}
+          keyboardShouldPersistTaps={'always'}
         >
           <Input
             inputType={InputTypes.EMAIL}
@@ -84,7 +94,7 @@ const SignInScreen = ({ navigation }) => {
             title={'SIGNUP'}
             onPress={() => navigate(AuthRoutes.SIGN_UP)}
           />
-        </View>
+        </ScrollView>
       </View>
     </SafeInputView>
   );
@@ -99,7 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   form: {
-    alignItems: 'center',
+    flexGrow: 0,
     backgroundColor: WHITE,
     paddingHorizontal: 20,
     paddingTop: 40,
