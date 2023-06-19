@@ -4,7 +4,7 @@ import { Image, Keyboard, StatusBar, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WHITE } from '../colors';
 import HR from '../components/HR';
-import Input, { InputTypes } from '../components/Input';
+import Input, { InputTypes, ReturnKeyTypes } from '../components/Input';
 import SafeInputView from '../components/SafeInputView';
 import TextButton from '../components/TextButton';
 import { AuthRoutes } from '../navigations/routes';
@@ -58,6 +58,7 @@ const SignInScreen = ({ navigation }) => {
             onChangeText={(text) => setEmail(text.trim())}
             onSubmitEditing={() => passwordRef.current.focus()}
             styles={{ container: { marginTop: 20 } }}
+            returnKeyType={ReturnKeyTypes.NEXT}
           />
           <Input
             ref={passwordRef}
@@ -66,6 +67,7 @@ const SignInScreen = ({ navigation }) => {
             onChangeText={(text) => setPassword(text.trim())}
             onSubmitEditing={onSubmit}
             styles={{ container: { marginTop: 20 } }}
+            returnKeyType={ReturnKeyTypes.DONE}
           />
 
           <Button
