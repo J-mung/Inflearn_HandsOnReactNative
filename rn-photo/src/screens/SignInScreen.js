@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useRef, useState } from 'react';
-import { Keyboard, StyleSheet, View } from 'react-native';
+import { Image, Keyboard, StatusBar, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { WHITE } from '../colors';
 import HR from '../components/HR';
 import Input, { InputTypes } from '../components/Input';
 import SafeInputView from '../components/SafeInputView';
@@ -16,7 +17,7 @@ const SignInScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
-  const { top } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
   const { navigate } = useNavigation();
   useEffect(() => {
     setDisabled(!email || !password);
@@ -33,6 +34,7 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <SafeInputView>
+      <StatusBar style={'light'} />
       <View style={[styles.container, { paddingTop: top }]}>
         {/* <Input
         title={'EMAIL'}
@@ -40,36 +42,47 @@ const SignInScreen = ({ navigation }) => {
         iconName={'email'}
         keyboardType={KeyboardTypes.EMAIL}
       /> */}
-        <Input
-          inputType={InputTypes.EMAIL}
-          value={email}
-          onChangeText={(text) => setEmail(text.trim())}
-          onSubmitEditing={() => passwordRef.current.focus()}
-          styles={{ container: { marginTop: 20 } }}
-        />
-        <Input
-          ref={passwordRef}
-          inputType={InputTypes.PASSWORD}
-          value={password}
-          onChangeText={(text) => setPassword(text.trim())}
-          onSubmitEditing={onSubmit}
-          styles={{ container: { marginTop: 20 } }}
-        />
+        <View style={StyleSheet.absoluteFillObject}>
+          <Image
+            source={require('../../assets/cover.png')}
+            style={{ width: '100%' }}
+            resizeMode={'cover'}
+          />
+        </View>
+        <View
+          style={[styles.form, { paddingBottom: bottom ? bottom + 10 : 40 }]}
+        >
+          <Input
+            inputType={InputTypes.EMAIL}
+            value={email}
+            onChangeText={(text) => setEmail(text.trim())}
+            onSubmitEditing={() => passwordRef.current.focus()}
+            styles={{ container: { marginTop: 20 } }}
+          />
+          <Input
+            ref={passwordRef}
+            inputType={InputTypes.PASSWORD}
+            value={password}
+            onChangeText={(text) => setPassword(text.trim())}
+            onSubmitEditing={onSubmit}
+            styles={{ container: { marginTop: 20 } }}
+          />
 
-        <Button
-          title={'SIGNIN'}
-          disabled={disabled}
-          isLoading={isLoading}
-          onPress={onSubmit}
-          styles={{ container: { marginTop: 20 } }}
-        />
+          <Button
+            title={'SIGNIN'}
+            disabled={disabled}
+            isLoading={isLoading}
+            onPress={onSubmit}
+            styles={{ container: { marginTop: 20 } }}
+          />
 
-        <HR text={'OR'} styles={{ container: { marginVertical: 30 } }} />
+          <HR text={'OR'} styles={{ container: { marginVertical: 30 } }} />
 
-        <TextButton
-          title={'SIGNUP'}
-          onPress={() => navigate(AuthRoutes.SIGN_UP)}
-        />
+          <TextButton
+            title={'SIGNUP'}
+            onPress={() => navigate(AuthRoutes.SIGN_UP)}
+          />
+        </View>
       </View>
     </SafeInputView>
   );
@@ -78,12 +91,18 @@ const SignInScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
+    justifyContent: 'flex-end',
   },
   title: {
     fontSize: 30,
+  },
+  form: {
+    alignItems: 'center',
+    backgroundColor: WHITE,
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
 });
 
