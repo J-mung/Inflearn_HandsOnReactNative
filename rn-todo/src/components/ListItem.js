@@ -15,8 +15,13 @@ const ListItem = memo(({ item, onDelete, onToggle }) => {
       <Pressable onPress={() => onToggle(item.id)} hitSlop={10}>
         <MaterialCommunityIcons {...checkboxProp} />
       </Pressable>
-      <View style={styles.task}>
-        <Text>{item.task}</Text>
+      <View style={styles.testContai}>
+        <View style={styles.wordWrap}>
+          {/* <Text>{item.task}</Text> */}
+          {item.task.split(' ').map((word) => (
+            <Text>{word}</Text>
+          ))}
+        </View>
       </View>
       <Pressable onPress={() => onDelete(item.id)} hitSlop={10}>
         <MaterialCommunityIcons
@@ -50,6 +55,14 @@ const styles = StyleSheet.create({
   task: {
     flex: 1,
     marginHorizontal: 10,
+  },
+  testContai: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  wordWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 });
 
