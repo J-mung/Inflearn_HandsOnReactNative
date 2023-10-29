@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import { useEffect, useRef, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Image,
   Keyboard,
@@ -30,6 +30,16 @@ const SignInScreen = ({ navigation }) => {
     setDisabled(!email || !password);
   }, [email, password]);
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setEmail('');
+        setPassword('');
+        setIsLoading(false);
+        setDisabled(true);
+      };
+    }, [])
+  );
   const onSubmit = () => {
     Keyboard.dismiss();
     if (!disabled && !isLoading) {
