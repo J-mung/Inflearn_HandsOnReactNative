@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { LogBox, View } from 'react-native';
 import { initFirebase } from './api/firebase';
+import { UserProvier } from './contexts/UserContext';
 import Navigation from './navigations';
 
 const App = () => {
@@ -36,10 +37,12 @@ const App = () => {
   }
 
   return (
-    <View style={{ flex: 1 }} onLayout={onReady}>
-      <StatusBar style={'dark'} />
-      <Navigation />
-    </View>
+    <UserProvier>
+      <View style={{ flex: 1 }} onLayout={onReady}>
+        <StatusBar style={'dark'} />
+        <Navigation />
+      </View>
+    </UserProvier>
   );
 };
 

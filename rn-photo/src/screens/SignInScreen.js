@@ -16,6 +16,7 @@ import HR from '../components/HR';
 import Input, { InputTypes, ReturnKeyTypes } from '../components/Input';
 import SafeInputView from '../components/SafeInputView';
 import TextButton from '../components/TextButton';
+import { useUserState } from '../contexts/UserContext';
 import { AuthRoutes } from '../navigations/routes';
 import {
   AuthFormTypes,
@@ -30,7 +31,7 @@ const SignInScreen = ({ navigation }) => {
 
   const { top, bottom } = useSafeAreaInsets();
   const { navigate } = useNavigation();
-
+  const [, setUser] = useUserState();
   useFocusEffect(
     useCallback(() => {
       return () =>
@@ -46,7 +47,7 @@ const SignInScreen = ({ navigation }) => {
       try {
         // signIn({email: form.email, password: form.password})
         const user = await signIn(form);
-        console.log(user);
+        setUser(user);
       } catch (e) {
         const message = getAuthErrorMessages(e.code);
         Alert.alert(message);
