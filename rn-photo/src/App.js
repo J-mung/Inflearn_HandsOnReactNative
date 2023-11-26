@@ -2,11 +2,12 @@ import { Asset } from 'expo-asset';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { LogBox, View } from 'react-native';
 import { initFirebase } from './api/firebase';
 import Navigation from './navigations';
 
 const App = () => {
+  LogBox.ignoreLogs(['@firebase/auth: Auth ']);
   const [isReady, setIsReady] = useState(false);
   useEffect(() => {
     (async () => {
