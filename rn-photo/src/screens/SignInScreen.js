@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { signIn } from '../api/auth';
 import { WHITE } from '../colors';
 import HR from '../components/HR';
 import Input, { InputTypes, ReturnKeyTypes } from '../components/Input';
@@ -37,14 +38,14 @@ const SignInScreen = ({ navigation }) => {
         });
     }, [])
   );
-  const onSubmit = () => {
+  const onSubmit = async () => {
     Keyboard.dismiss();
     if (!form.disabled && !form.isLoading) {
       dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
-      console.log(form.email, form.password);
-      setTimeout(() => {
-        dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
-      }, 1000);
+      // signIn({email: form.email, password: form.password})
+      const user = await signIn(form);
+      console.log(user);
+      dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
     }
   };
 
