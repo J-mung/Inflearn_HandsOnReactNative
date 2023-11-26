@@ -3,6 +3,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { initFirebase } from './api/firebase';
 import Navigation from './navigations';
 
 const App = () => {
@@ -12,6 +13,9 @@ const App = () => {
       try {
         await SplashScreen.preventAutoHideAsync();
         await Asset.fromModule(require('../assets/cover.png')).downloadAsync();
+
+        const app = initFirebase();
+        console.log('>>> app: ', app);
       } catch (e) {
         console.log(e);
       } finally {
