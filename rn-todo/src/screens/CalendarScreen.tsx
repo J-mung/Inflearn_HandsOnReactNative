@@ -7,18 +7,25 @@ import {
   View,
 } from 'react-native';
 import { Calendar, CalendarUtils } from 'react-native-calendars';
-
-const INITIAL_DATE = new Date().toISOString().split('T')[0];
+import { INITIAL_DATE_STRING } from '../constans/constant';
 
 type PeriodType = {
   [key: string]: {};
 };
 
-const CalendarScreen = () => {
-  const [selected, setSelected] = React.useState(INITIAL_DATE);
-  const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE.split('-')[1]);
-  const [startAt, setStartAt] = React.useState('');
-  const [endAt, setEndAt] = React.useState('');
+const CalendarScreen = ({
+  startDate,
+  endDate,
+  onChangeStartDate,
+  onChangeEndDate,
+  onPressResearch,
+  onChangeColorToBlack,
+}) => {
+  const [selected, setSelected] = React.useState(INITIAL_DATE_STRING);
+  const [currentMonth, setCurrentMonth] = useState(
+    INITIAL_DATE_STRING.split('-')[1],
+  );
+  const [period, setPeriod] = React.useState<PeriodType>({});
   const getDate = (count: number) => {
     const date = new Date(selected);
     const newDate = date.setDate(date.getDate() + count);
@@ -38,26 +45,26 @@ const CalendarScreen = () => {
   const onPeriodPress = (day) => {
     // 시작일, 종료일, 기간
     // 시작일( false ) 종료일( false )
-    if (startAt === '' && endAt === '') {
+    if (startDate === '' && endDate === '') {
       // Set 시작일
       console.log('set StartAt');
-      setStartAt(day.dateString);
+      onChangeStartDate(day.dateString);
     }
     // 시작일( true ) 종료일( false )
-    else if (startAt !== '' && endAt === '') {
+    else if (startDate !== '' && endDate === '') {
       // day is previous than 시작일
       const current = new Date(day.dateString);
-      const start = new Date(startAt);
+      const start = new Date(startDate);
       if (current < start) {
         // Set day into 시작일
         console.log('set StartAt');
-        setStartAt(day.dateString);
+        onChangeStartDate(day.dateString);
       }
       // day is next than 시작일
       else {
         // Set day into 종료일
         console.log('set EndAt');
-        setEndAt(day.dateString);
+        onChangeEndDate(day.dateString);
       }
     }
     // 시작일( true ) 종료일( true )
@@ -67,21 +74,21 @@ const CalendarScreen = () => {
     // #3 |--------------------------------------day-|
     else {
       const current = new Date(day.dateString);
-      const start = new Date(startAt);
-      const end = new Date(endAt);
+      const start = new Date(startDate);
+      const end = new Date(endDate);
       // #1 Set day into 시작일 & Set initial into 종료일
       if (current < start) {
-        setStartAt(day.dateString);
-        setEndAt('');
+        onChangeStartDate(day.dateString);
+        onChangeEndDate('');
       }
       // #2 Set day into 종료일
       // #3 Set day into 시작일 & Set initial into 종료일
       else {
-        setEndAt(day.dateString);
+        onChangeEndDate(day.dateString);
       }
     }
   };
-  console.log('startAt & endAt: ', startAt, endAt);
+
   const marked = useMemo(() => {
     return {
       [getDate(0)]: {
@@ -98,24 +105,26 @@ const CalendarScreen = () => {
   }, [selected]);
 
   const reset = () => {
-    setStartAt('');
-    setEndAt('');
+    onChangeStartDate('');
+    onChangeEndDate('');
+    onChangeColorToBlack();
+    setPeriod({});
     console.log('Reset period');
   };
 
   const periodMarked = React.useMemo(() => {
-    const start = new Date(startAt);
-    const end = new Date(endAt);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
     let localPeriod = {};
     localPeriod = {
       ...localPeriod,
-      [startAt]: {
+      [startDate]: {
         disableTouchEvent: true,
         startingDay: true,
         color: '#50cebb',
         textColor: 'white',
       },
-      [endAt]: {
+      [endDate]: {
         endingDay: true,
         color: '#50cebb',
         textColor: 'white',
@@ -126,7 +135,7 @@ const CalendarScreen = () => {
       },
     };
 
-    if (endAt !== '') {
+    if (endDate !== '') {
       let i = new Date(start.toISOString());
       i.setDate(i.getDate() + 1);
 
@@ -147,7 +156,7 @@ const CalendarScreen = () => {
     }
 
     return localPeriod;
-  }, [startAt, endAt]);
+  }, [startDate, endDate]);
 
   return (
     <ScrollView horizontal={false} showsVerticalScrollIndicator={false}>
@@ -161,9 +170,23 @@ const CalendarScreen = () => {
               borderRadius: 10,
               justifyContent: 'center',
               alignItems: 'center',
+              marginBottom: 10,
             }}
           >
             <Text style={{ color: 'white' }}>reset</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPressResearch}>
+          <View
+            style={{
+              backgroundColor: 'lightgray',
+              borderWidth: 1,
+              borderRadius: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={{ color: 'white' }}>조회</Text>
           </View>
         </TouchableOpacity>
         <Calendar
@@ -183,12 +206,12 @@ const CalendarScreen = () => {
             arrowColor: '#319e8e',
           }}
         />
-        <Calendar
-          current={INITIAL_DATE}
+        {/* <Calendar
+          current={INITIAL_DATE_STRING}
           minDate={getPeriodDate(-14)}
           markingType={'period'}
           markedDates={{
-            [INITIAL_DATE]: { marked: true, dotColor: '#50cebb' },
+            [INITIAL_DATE_STRING]: { marked: true, dotColor: '#50cebb' },
             [getPeriodDate(4)]: { marked: true, dotColor: '#50cebb' },
             [getPeriodDate(9)]: {
               startingDay: true,
@@ -229,7 +252,7 @@ const CalendarScreen = () => {
           }}
           onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
           //   onDayPress={onPeriodPress}
-        />
+        /> */}
       </Fragment>
     </ScrollView>
   );
