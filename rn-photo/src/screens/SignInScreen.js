@@ -32,6 +32,7 @@ const SignInScreen = ({ navigation }) => {
   const { top, bottom } = useSafeAreaInsets();
   const { navigate } = useNavigation();
   const [, setUser] = useUserState();
+
   useFocusEffect(
     useCallback(() => {
       return () =>
@@ -40,6 +41,7 @@ const SignInScreen = ({ navigation }) => {
         });
     }, [])
   );
+
   const onSubmit = async () => {
     Keyboard.dismiss();
     if (!form.disabled && !form.isLoading) {
@@ -47,6 +49,7 @@ const SignInScreen = ({ navigation }) => {
       try {
         // signIn({email: form.email, password: form.password})
         const user = await signIn(form);
+        console.log('>>> user sign in result: ', user);
         setUser(user);
       } catch (e) {
         const message = getAuthErrorMessages(e.code);

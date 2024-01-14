@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { Calendar, CalendarUtils } from 'react-native-calendars';
 import { INITIAL_DATE_STRING } from '../constans/constant';
+import { UsageGraph } from './../components/UsageGraph';
 
 type PeriodType = {
   [key: string]: {};
@@ -206,53 +207,7 @@ const CalendarScreen = ({
             arrowColor: '#319e8e',
           }}
         />
-        {/* <Calendar
-          current={INITIAL_DATE_STRING}
-          minDate={getPeriodDate(-14)}
-          markingType={'period'}
-          markedDates={{
-            [INITIAL_DATE_STRING]: { marked: true, dotColor: '#50cebb' },
-            [getPeriodDate(4)]: { marked: true, dotColor: '#50cebb' },
-            [getPeriodDate(9)]: {
-              startingDay: true,
-              color: '#50cebb',
-              textColor: 'white',
-            },
-            [getPeriodDate(10)]: {
-              color: '#70d7c7',
-              customTextStyle: {
-                color: '#FFFAAA',
-                fontWeight: '700',
-              },
-            },
-            [getPeriodDate(11)]: {
-              color: '#70d7c7',
-              textColor: 'white',
-              marked: true,
-              dotColor: 'white',
-            },
-            [getPeriodDate(12)]: { color: '#70d7c7', inactive: true },
-            [getPeriodDate(13)]: {
-              endingDay: true,
-              color: '#50cebb',
-              textColor: 'white',
-              customContainerStyle: {
-                borderTopRightRadius: 5,
-                borderBottomRightRadius: 5,
-              },
-            },
-            [getPeriodDate(25)]: { inactive: true, disableTouchEvent: true },
-          }}
-          disabledDaysIndexes={[0, 6]}
-          theme={{
-            textInactiveColor: '#a68a9f',
-            textSectionTitleDisabledColor: 'grey',
-            textSectionTitleColor: '#319e8e',
-            arrowColor: '#319e8e',
-          }}
-          onDayPress={(day) => console.warn(`${day.dateString} pressed`)}
-          //   onDayPress={onPeriodPress}
-        /> */}
+        <UsageGraph />
       </Fragment>
     </ScrollView>
   );

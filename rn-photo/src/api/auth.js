@@ -2,6 +2,7 @@ import {
   AuthErrorCodes,
   createUserWithEmailAndPassword,
   getAuth,
+  onAuthStateChanged as onAuthStateChangedFirebase,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
@@ -34,4 +35,8 @@ export const signUp = async ({ email, password }) => {
     password
   );
   return user;
+};
+
+export const onAuthStateChanged = (callback) => {
+  return onAuthStateChangedFirebase(getAuth(), callback);
 };
